@@ -1,0 +1,27 @@
+{
+  "variables": {
+    "region" : "us-east-1"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "region": "{{user `region`}}",
+    "profile": "default",
+    "source_ami" : "ami-009d6802948d06e52",
+    "instance_type": "t2.micro",
+    "ssh_username": "ec2-user",
+    "ami_name": "packer-build01-docker",
+    "ami_description": "amazon linux 2 with docker - created via packer",
+    "run_tags": {
+      "Name": "packer-builder-docker",
+      "Author": "zurkz",
+      "Builder": "Packer"
+}
+  }
+],
+  "provisioners": [
+      {
+          "type": "shell",
+          "script": "./config.sh"
+      }
+  ]
+}
