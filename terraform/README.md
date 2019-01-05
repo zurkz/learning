@@ -1,4 +1,7 @@
-# Diving into Terraform
+# terraform
+
+#### create terraform IAM user and give it programmatic access and proper IAM roles
+
 
 #### install terraform, create directory for terraform and create 
 
