@@ -1,6 +1,6 @@
 # terraform
 
-#### create terraform IAM user and give it programmatic access and proper IAM roles
+#### create terraform IAM user and give it programmatic access and proper roles
 
 
 #### install terraform, create directory for terraform and create 
@@ -12,12 +12,3 @@ provider "aws" {
   region                  = "us-west-1"
   shared_credentials_file = "/path/to/.aws/credentials"
   profile                 = "terraform-user"
-}
-
-resource "aws_instance" "web" {
-  ami = "ami-009d6802948d06e52"
-  instance_type = "t2.micro"
-  tags {
-    Name = "websrv01-terraform"
-  }
-```
