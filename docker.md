@@ -2,11 +2,11 @@
 
 ##
 
-Docker client -> cli shell which runs commands that are sent to the docker daemon
+Docker client ---> cli shell which runs commands that are sent to the docker daemon
 
-Docker daemon -> local docker process
+Docker daemon ---> local docker process
 
-Docker image  -> file containing data that is used to create an OS and apps
+Docker image  ---> file containing data that is used to create an OS and apps
 
 ``` docker run <imagename> ```
 
@@ -48,18 +48,18 @@ Life Cycle of a Container
 docker run = docker create + docker start
 
 Stopping a container
--  docker stop <container id>
+-  docker stop container id
    -  SIGTERM is sent to container to shutdown on its own time.
       - a graceful shutdown, gives time to shut things down and do a little clean up
    -  Ideally use this command to stop containers
--  docker kill <container id>
+-  docker kill container id
    -  SIGKILL or kill signal. You have to shut down right now. Dirty shutdown
    -  Use this to stop a container that wont shut down. Stop reverts to kill after 10 seconds
 
 docker run options
-*   -i -> interactive, attach our terminal to STDIN 
-*   -t -> ensures text shows up in a nicely formatted manner
-*   -d (--detach) -> detach, container runs in the background.
+*   -i ---> interactive, attach our terminal to STDIN 
+*   -t ---> ensures text shows up in a nicely formatted manner
+*   -d (--detach) ---> detach, container runs in the background.
 *   -p 80:80 ---> port mapping. port_outside_container:port_inside_container. ports do not have to be identicial.
 
 
