@@ -347,3 +347,7 @@ ir	e
 \\Uhhhhhhhh | Unicode 32-bit hex
 \\other | Not an escape (keeps both \ and other)
 
+If Python doesn't recognize the character after a backslash as an escape, Python will keep the backslash in the string.
+
+If you have an escape and want it to be interpreted literally, ie: ```myfile = open('C:\new\text.txt', 'w')```, prefix the string with a 'r' to suppress the escape mechanism.
+```>>> myfile = open(r'C:\new\text.txt', 'w')```
