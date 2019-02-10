@@ -541,6 +541,7 @@ Opening a file
 - w is the processing mode. in this case w means to open or create a file for writing and if the file exists, overwrite it.
 
 Processing modes:
+
 |Mode |	Description
 ---|---
 r |	Opens a file for reading only. The file pointer is placed at the beginning of the file. This is the default mode.
@@ -563,7 +564,7 @@ ab+ |	Opens a file for both appending and reading in binary format. The file poi
 
 if statements -- 
 ```
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 var1 = 100
 if var1:
@@ -587,7 +588,7 @@ while loop | repeats a statement or group of statements while a given condition 
 for loop | executes a sequence of statements multiple times and abbreviates the code that manges the loop variable
 nested loops | A loop inside a loop
 
-- While loops
+- while loops
     - repeatedly executes a statement as long as a given condition is true.
 
     ```
@@ -597,7 +598,7 @@ nested loops | A loop inside a loop
     another example:
     while01.py
     ```
-    #!/usr/bin/python
+    #!/usr/bin/env python3
     count = 0
     while (count < 9):
         print 'The count is:', count
@@ -619,6 +620,60 @@ nested loops | A loop inside a loop
     ```
     
     Infinite loop ---> A loop becomes infinte if a condition never becomes FALSE. The loop will never end.
+
+    **else** statements
+    - if an **else** statement is used with a for loop; the else statement is executed when the loop has exhausted iterating the list
+    - if an **else** statement is used with a while loop; the else statement is executed when the condition becomes false
+
+    while02.py
+    ```
+    #!/usr/bin/env python3
+    count = 0
+    while count < 5:
+       print count, " is  less than 5"
+       count = count + 1
+    else:
+       print count, " is not less than 5"
+   ```
+   ```
+   $ python while02.py
+   0 is less than 5
+   1 is less than 5
+   2 is less than 5
+   3 is less than 5
+   4 is less than 5
+   5 is not less than 5
+   ```
+
+- for loops
+    - iterate over the items of any sequence, such as a list or a string
+```
+for iterating_var in sequence:
+   statements(s)
+```
+for01.py
+```
+#!/usr/bin/env python3
+for letter in 'Daniel':     # First Example
+   print 'Current Letter :', letter
+
+colors = ['red', 'green',  'purple', 'pink']
+for color in colors:        # Second Example
+   print 'Current color :', color
+```
+```
+$ python for01.py
+Current Letter : D
+Current Letter : a
+Current Letter : n
+Current Letter : i
+Current Letter : e
+Current Letter : l
+Current color : red
+Current color : green
+Current color : purple
+Current color : pink
+```
 
 ---
 
