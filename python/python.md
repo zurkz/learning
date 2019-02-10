@@ -35,6 +35,72 @@ exec ---> similar effect to import but it doesn't import the module.
 - exec has the potential to silently overwrite variables we may currently be using.
 - for contrast, import runs the file only once per process, and it makes the file a separate module namespace so that its assignments will not change variables in our scope.
 
+---
+### Operators
+
+variables:
+- a = 10
+- b = 20
+  
+Arithmetic Operators
+Operator |	Description |	Example
+---|---|---
++ Addition | Adds values on either side of the operator. |	a + b = 30
+\- Subtraction |	Subtracts right hand operand from left hand operand. |	a – b = -10
+\* Multiplication |	Multiplies values on either side of the operator |	a * b = 200
+/ Division | 	Divides left hand operand by right hand operand |	b / a = 2
+% Modulus |	Divides left hand operand by right hand operand and returns remainder |	b % a = 0
+** Exponent |	Performs exponential (power) calculation on operators |	a**b =10 to the power 20
+// |	Floor Division - The division of operands where the result is the quotient in which the digits after the decimal point are removed. But if one of the operands is negative, the result is floored, i.e., rounded away from zero (towards negative infinity) − |	9//2 = 4 and 9.0//2.0 = 4.0, -11//3 = -4, -11.0//3 = -4.0
+
+Comparison Operators
+
+Operator |	Description |	Example
+---|---|---
+== |	If the values of two operands are equal, then the condition becomes true. |	(a == b) is not true.
+!= |	If values of two operands are not equal, then condition becomes true. |	(a != b) is true.
+<> | 	If values of two operands are not equal, then condition becomes true. |	(a <> b) is true. This is similar to != operator.
+\> |	If the value of left operand is greater than the value of right operand, then condition becomes true. |	(a > b) is not true.
+< |	If the value of left operand is less than the value of right operand, then condition becomes true. |	(a < b) is true.
+\>= |	If the value of left operand is greater than or equal to the value of right operand, then condition becomes true. |	(a >= b) is not true.
+<= |	If the value of left operand is less than or equal to the value of right operand, then condition becomes true. |	(a <= b) is true.
+
+Assignment Operators
+Operator |	Description |	Example
+---|---|---
+= |	Assigns values from right side operands to left side operand |	c = a + b assigns value of a + b into c
++= Add AND |	It adds right operand to the left operand and assign the result to left operand |	c += a is equivalent to c = c + a
+-= Subtract AND |	It subtracts right operand from the left operand and assign the result to left operand |	c -= a is equivalent to c = c - a
+*= Multiply AND |	It multiplies right operand with the left operand and assign the result to left operand |	c *= a is equivalent to c = c * a
+/= Divide AND |	It divides left operand with the right operand and assign the result to left operand |	c /= a is equivalent to c = c / ac /= a is equivalent to c = c / a
+%= Modulus AND |	It takes modulus using two operands and assign the result to left operand |	c %= a is equivalent to c = c % a
+**= Exponent AND |	Performs exponential (power) calculation on operators and assign value to the left operand |	c **= a is equivalent to c = c ** a
+//= Floor Division |	It performs floor division on operators and assign value to the left operand |	c //= a is equivalent to c = c // a
+
+Logical Operators
+Operator |	Description |	Example
+---|---|---
+and Logical AND |	If both the operands are true then condition becomes true. |	(a and b) is true.
+or Logical OR |	If any of the two operands are non-zero then condition becomes true. |	(a or b) is true.
+not Logical NOT |	Used to reverse the logical state of its operand. |	Not(a and b) is false.
+
+Membership Operators
+- membership operators test for membership in a sequence, such as strings, lists, or tuples.
+ 
+Operator |	Description |	Example
+---|---|---
+in | 	Evaluates to true if it finds a variable in the specified sequence and false otherwise. |	x in y, here in results in a 1 if x is a member of sequence y.
+not in |	Evaluates to true if it does not finds a variable in the specified sequence and false otherwise. |	x not in y, here not in results in a 1 if x is not a member of sequence y.
+
+Identity Operators
+- compare the memory locations of two objects. 
+
+Operator |	Description |	Example
+---|---|---
+is |	Evaluates to true if the variables on either side of the operator point to the same object and false otherwise. |	x is y, here is results in 1 if id(x) equals id(y).
+is not |	Evaluates to false if the variables on either side of the operator point to the same object and true otherwise. |	x is not y, here is not results in 1 if id(x) is not equal to id(y).
+
+---
 Exceptions
 
 An indication of erros. 
@@ -351,3 +417,230 @@ If Python doesn't recognize the character after a backslash as an escape, Python
 
 If you have an escape and want it to be interpreted literally, ie: ```myfile = open('C:\new\text.txt', 'w')```, prefix the string with a 'r' to suppress the escape mechanism.
 ```>>> myfile = open(r'C:\new\text.txt', 'w')```
+
+Alternatively, you can escape a backslash with a backslash. 
+
+```>>> myfile = open('C:\\new\\text.txt', 'w')```
+
+```
+>>> path = r'C:\new\text.txt'
+>>> path
+'C:\\new\\text.txt'
+>>> print(path)
+C:\new\text.txt
+>>> len(path)
+15
+```
+
+block string ---> for coding multiline text data. enclose the string in triple quotes ("""string""")
+```
+>>> Daniel = """Daniel is a remarkable man with
+... many different "talents" including
+... talking to starfish, trees, and the sky"""
+>>>
+>>> Daniel
+'Daniel is a remarkable man with \nmany different "talents" including\ntalking to starfish, trees, and the sky'
+>>>
+>>> print(Daniel)
+Daniel is a remarkable man with
+many different "talents" including
+talking to starfish, trees, and the sky
+```
+
+Slicing with the Index
+- strings are ordered collections of characters.
+
+![](index-slicing.png)
+
+```
+>>> S = 'Starfish'
+>>> # Index from the start and end
+... S[0], S[-1], S[-4]
+('S', 'h', 'f')
+>>> # Extracting a section by slicing
+... S[1:3], S[3:], S[-6]
+('ta', 'rfish', 'a')
+>>> S[1:3], S[3:], S[-6], S[:-5]
+('ta', 'rfish', 'a', 'Sta')
+```
+
+Slice expressions have an option 3rd index as a step or stride.
+```x[d:e:f]```. This means: extract all items in x from offset d through e-1 by f.
+
+```
+>>> F = 'Fantastic Frank'
+>>> F
+'Fantastic Frank'
+>>> F[1:11:3] #start at index 1 and extract every 3rd character up to 11-1
+'aaiF'
+>>> F[1:11:2] #start at index 1 and extract every 2rd character up to 11-1
+'atsi '
+>>> F[::-1] # -1 indicates to go from left to right. It reverses the sequence.
+'knarF citsatnaF'
+>>> F[11:1:-1]
+'rF citsatn'
+```
+---
+
+## OS Module
+
+os module contains functions to get info on local dirs, files, processes, and environment variables
+
+- os.getcwd() ---> get current working directory
+  ```
+  >>> import os
+  >>> print(os.getcwd())
+  C:\Python32
+  >>> os.chdir('/test')
+  >>> print(os.getcwd())
+  C:\test
+  ```
+- os.chdir() ---> function to change the current working directory (cwd)
+- os.path ---> function to manipulate filenames and directory names
+  - os.path.join ---> function constructs a pathname out of one or more partial pathnames. Concatenates strings.
+  - os.path.expanduser() ---> function will expand a pathname that uses ~ to represent the users' home dir.
+  ```
+  >>> import os
+  >>> print(os.path.join('/test/', 'myfile'))
+  /test/myfile
+  >>> print(os.path.expanduser('~'))
+  C:\Users\K
+  >>> print(os.path.join(os.path.expanduser('~'),'dir', 'subdir', 'k.py'))
+  C:\Users\K\dir\subdir\k.py
+  ```
+- os path.split ---> splits full pathnames, dir names, and filenames into their constituent parts.
+  ```
+  >>> pathname = "/Users/K/dir/subdir/k.py"
+  >>> os.path.split(pathname)
+  ('/Users/K/dir/subdir', 'k.py')
+  >>> (dirname, filename) = os.path.split(pathname)
+  >>> dirname
+  '/Users/K/dir/subdir'
+  >>> pathname
+  '/Users/K/dir/subdir/k.py'
+  >>> filename
+  'k.py'
+  >>> (shortname, extension) = os.path.splitext(filename)
+  >>> shortname
+  'k'
+  >>> extension
+  '.py'
+  ```
+- glob.glob() ---> function to get the contents of a directory programmatically.
+  ```
+  >>> import glob
+  >>> os.chdir('../')
+  >>> glob.glob('*.md')
+  ['puppet.md', 'RHCSA.md', 'nix.md', 'README.md', 'salonzed.md', 'Basic AWS VPC.md', 'docker.md', 'bash.md']
+   ```
+
+Opening a file
+- use built in open() function
+
+``` myfile = open('mydir/file.txt', 'w') ```
+- w is the processing mode. in this case w means to open or create a file for writing and if the file exists, overwrite it.
+
+Processing modes:
+|Mode |	Description
+---|---
+r |	Opens a file for reading only. The file pointer is placed at the beginning of the file. This is the default mode.
+rb |	Opens a file for reading only in binary format. The file pointer is placed at the beginning of the file. This is the default mode.
+r+ |	Opens a file for both reading and writing. The file pointer will be at the beginning of the file.
+rb+ |	Opens a file for both reading and writing in binary format. The file pointer will be at the beginning of the file.
+w |	Opens a file for writing only. Overwrites the file if the file exists. If the file does not exist, creates a new file for writing.
+wb |	Opens a file for writing only in binary format. Overwrites the file if the file exists. If the file does not exist, creates a new file for writing.
+w+ |	Opens a file for both writing and reading. Overwrites the existing file if the file exists. If the file does not exist, creates a new file for reading and writing.
+a |	Opens a file for appending. The file pointer is at the end of the file if the file exists. That is, the file is in the append mode. If the file does not exist, it creates a new file for writing.
+ab |	Opens a file for appending in binary format. The file pointer is at the end of the file if the file exists. That is, the file is in the append mode. If the file does not exist, it creates a new file for writing.
+a+ |	Opens a file for both appending and reading. The file pointer is at the end of the file if the file exists. The file opens in the append mode. If the file does not exist, it creates a new file for reading and writing.
+ab+ |	Opens a file for both appending and reading in binary format. The file pointer is at the end of the file if the file exists. The file opens in the append mode. If the file does not exist, it creates a new file for reading and writing.
+----
+
+## Decision Making
+
+- Any non-zero and non-null values are TRUE
+- Any zero or null valyes are FALSE
+
+if statements -- 
+```
+#!/usr/bin/python
+
+var1 = 100
+if var1:
+   print "1 - Got a true expression value"
+   print var1
+
+var2 = 0
+if var2:
+   print "2 - Got a true expression value"
+   print var2
+print "Good bye!"
+```
+
+Statements are executed sequentially. First statement is executed first, followed by second, and so on. You may need to execute a block of code serveral times.
+
+A loop lets us execute a state or group of statements multiple times. 
+
+Loop type | Description
+---|---
+while loop | repeats a statement or group of statements while a given condition is **TRUE**. It tests the condition before executing the loop body.
+for loop | executes a sequence of statements multiple times and abbreviates the code that manges the loop variable
+nested loops | A loop inside a loop
+
+- While loops
+    - repeatedly executes a statement as long as a given condition is true.
+
+    ```
+    while expression:
+        statement(s)
+    ```
+    another example:
+    while01.py
+    ```
+    #!/usr/bin/python
+    count = 0
+    while (count < 9):
+        print 'The count is:', count
+        count = count + 1
+    print "Good bye"
+    ```
+    ```
+    $ python while01.py
+    The count is: 0
+    The count is: 1
+    The count is: 2
+    The count is: 3
+    The count is: 4
+    The count is: 5
+    The count is: 6
+    The count is: 7
+    The count is: 8
+    Good bye
+    ```
+    
+    Infinite loop ---> A loop becomes infinte if a condition never becomes FALSE. The loop will never end.
+
+---
+
+## Pratice
+
+#### Merge two sorted lists
+
+You have two sorted lists, and you need to write a function to merge the two lists into one sorted list:
+```
+a = [3, 4, 6, 10, 11, 18]
+b = [1, 5, 7, 12, 13, 19, 21]
+```
+
+the code:
+
+```
+a = [3, 4, 6, 10, 11, 18]
+b = [1, 5, 7, 12, 13, 19, 21]
+c = []
+
+while a and b:
+    if a[0] < b[0]:
+        c.append(a.pop(0))
+    else:
+        c.append(b.pop(0))
