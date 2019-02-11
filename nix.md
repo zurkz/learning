@@ -170,6 +170,26 @@ rm -rf salonzed.tar.gz
 hard drives - storage - iops - inodes
 
 ports
+---
+
+### Linux Boot Process
+
+1) The first step of the boot process is the BIOS (Basic IO System)
+   - BIOS initializes hardware (detects HDDs, USB, CDs, NICS, etc).
+   - Then BIOS will step trhough each boot device based on the boot device order until if finds one it can successfully boot from. It then loads the MBR (or GPT)
+2) After BIOS loads the hardware and finds the first boot device, the **boot loader** takes over. Different devices have different boot loaders:
+   1) GRUB boot from HDD
+   2) syslinux, boot from USB
+   3) isolinux, boot from CD
+   4) pxelinux, boot from network
+3) Once a **kernel** is selected in GRUB, GRUB will **load the Linux kernel** into RAM and execute it.
+   - GRUB will also load initrd which is the inital RAM disk.
+     - initrd contains config files, kernel modules, and programs that the kernel needs in order to find and mount the real root file system.
+     - Final step is executing /sbin/init which takes over the rest of the boot process.
+4) /sbin/init - parent process of every program running on a system
+   - Always has a PID of 1
+   - Responsible for starting the rest of the process that make up a Linux system.
+
 
 ---
 
