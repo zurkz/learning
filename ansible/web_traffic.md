@@ -42,3 +42,26 @@ a
 - 200 OK - most common, tells the client that the request was successfully processed.
 - 202 Accepted - The request was accepted but may not include the resource in the response.    
 
+
+
+
+
+
+---
+
+### TCP
+4 things - 4 tuple
+- remote-ip address, report-port, source-ip-address, source-port
+
+4-tuple uniquely identifies a connction
+
+
+How many NTP servers would you configure in ntp.conf?
+- At least 2 remote servers to synchronize against.
+- primary and a backup
+
+What is an HTTP proxy and how does it work?
+- HTTP request is sent from the client to port 8080 of the Proxy Server. The Proxy Server then originates a new HTTP request to destination.
+
+
+

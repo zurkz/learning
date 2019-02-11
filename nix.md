@@ -27,16 +27,20 @@ tee ---> copies STDIN to both a file and to STDOUT (default the screen)
 - takes a single stream of input and sends the output in two directions
 - tee saves a copy of STDIN to vmstat.out, and vmstat.out also sends a copy to STDOUT. 
 
-#### INODE
+#### INODE (information node)
 - Every file in the system has an inode (index node)
 - contains all file information **except the file contents and name**
   - an INODE contains:
-    - Inode number
-    - File size
-    - Owner info
-    - Permissions
-    - File Type
-    - Number of links
+    - metadata associated with a file
+    - modification time stamp
+    - owner
+    - type
+    - length
+    - location
+
+A **name** and **INODE** pair are called a link.
+
+
 
 #### Links
 
@@ -67,6 +71,69 @@ Soft links:
 Hard links:
 - different name of the same file
 - same file size 
+- same INODE #
+---
+
+### File Types
+
+ By default only 3 types of files:
+ 1) Regular files ('-')
+ 2) Directory files ('d')
+ 3) Special files (5 types)
+    1) Block file ('b')
+    2) Character device file('c')
+    3) Named pipe file or just pipe file ('p')
+    4) Symbolic link file ('l')
+    5) Socket files('s')
+   ```
+   k@laptop:~/DEMO$ ls -l
+   total 4
+   drwxrwxr-x 2 k k 4096 Dec  9 09:16 mydir
+   -rw-rw-r-- 1 k k    0 Dec  9 09:16 myfile1
+   -rw-rw-r-- 1 k k    0 Dec  9 09:16 myfile2
+   lrwxrwxrwx 1 k k    7 Dec  9 09:16 my_link -> myfile1
+   ```
+- block file types
+  - hardware files.
+  - present in /dev.
+  - created by fdisk or by partitioning
+```
+k@laptop:~/DEMO$ ls -l /dev/  | grep ^b
+brw-rw----  1 root disk        7,   0 Dec  8 13:31 loop0
+brw-rw----  1 root disk        8,   0 Dec  8 13:31 sda
+brw-rw----  1 root disk        8,   1 Dec  8 13:31 sda1
+brw-rw----  1 root disk        8,   2 Dec  8 13:31 sda2
+brw-rw----  1 root disk        8,   3 Dec  8 13:31 sda3
+```
+
+- character device file type
+  - provides a serial stream of input or output
+
+---
+
+### RAID
+- Redundant Array of Independent Disks
+- Levels:
+  - 0: Striping. No mirroring or parity
+    - Capicity is the sum of all the disks
+    - Striping distributes the contents of each file among all disks
+    - If any disk fails, all files and the RAID volume will be lost
+  - 1: Mirroring. Without parity or striping
+    - Data is written identically to two drives
+  - 4: Block-level striping with parity
+    - Stores parity on seperate disk
+  - 5: Block-level striping with parity
+    - Requires 3+ drives
+    - Data blocks are striped across the drives and parity data is distributed over all the disks instead of storing them on a dedicated disk (RAID4)
+    - Requires all drives but 1 be present
+    - Can handle only a single disk failure
+  - 6: Block-level striping with double parity blocks.
+    - Each disk has 2 parity blocks which are stored on different disks across the array. 
+    - Fault tolerance increases up to 2 drive failures in the array.
+  - 10: RAID 1+0
+    - Combines both RAID 1 and RAID 0 by layering them in opposite order
+    - Hybrid or Nested 
+    - Fast performance of RAID0 and the redundancy of RAID0
 
 ---
 
@@ -104,6 +171,21 @@ hard drives - storage - iops - inodes
 
 ports
 
+---
+
+### Logging In
+
+When you first log in via console, the shell first executes commands in /etc/profile then looks for ~/.bash_profile, ~/.profile, and ~/.bash_login. A command in any of these files will override the defaults set in /etc/profile.
+
+When you log out, bash executes the commands in ~/.bash_logout
+
+If you're already logged into a machine and open a new terminal window, .bashrc is executed.
+
+~/.bash_profile ---> place to put stuff that applies to our whole session. ie startup programs and environment variables
+
+~/.bashrc ---> place to put stuff that applies only to bash itself. ie alias, shell options, prompt settings
+
+
 
 
 ---
@@ -115,3 +197,70 @@ parted
 
 #### file management
 dh
+
+
+
+head - list first 10 lines of a file
+- head -n50 ---> list first 50 lines
+
+tail - list last 10 lines of a file
+- tail =n50 ---> list last 50 lines
+
+sed - stream editor. perform basic text transformations on an input stream (file or input). 
+- sed **-i** ---> enables edits to the stream. means **edit file in-place**
+- s/ ---> substition. replace character or string. (sed -i 's/A/a/g' file.txt) - replaces A with a throughout entire file
+- /g ---> global. performs action throughout entire stream instead of first occurance
+
+    ```
+    $ cat text
+    i wandered lonely as a cloud
+    that floats on high o'er vales and hills,
+    when all at once I saw a crowd,
+    a host, of golden daffodils;
+    beside the lake, beneath the trees,
+    fluttering and dancing in the breeze.
+    ```
+
+    change a to A
+    ```
+    $ sed -i 's/a/A/g' text
+    $ cat text
+    i wAndered lonely As A cloud
+    thAt floAts on high o'er vAles And hills,
+    when All At once I sAw A crowd,
+    A host, of golden dAffodils;
+    beside the lAke, beneAth the trees,
+    fluttering And dAncing in the breeze.
+    ```
+
+    change A to a
+    ```
+    $ sed -i 's/A/a/g' text
+    $ cat text
+    i wandered lonely as a cloud
+    that floats on high o'er vales and hills,
+    when all at once I saw a crowd,
+    a host, of golden daffodils;
+    beside the lake, beneath the trees,
+    fluttering and dancing in the breeze.
+    ```
+dig - domain information groper
+  - Query DNS name servers
+  - ```$dig google.com``` returns the A record
+  - ```$dig -x 12.34.5.6```
+      - reverse lookup
+      - return the corresponding domain name for that IP address
+nslookup - name server lookup
+- Query DNS to obtain domain name or IP address mapping
+
+pinp - tests the network connection between the local machine and a remote address
+
+traceroute - expands on ping
+- provides a report on the path that the packets take to get from the local machine to the remote machine.
+- based on ICMP.
+- To discover the routers on the path to a destination, it uses the **TTL field** in the header of the ICMP packets.
+  -   When a TCP packet is sent, its TTL is set (the # of routers (hops) it can pass through before the packet is discarded).
+  -   As the packet passes through a router, the TTL is decremented and when the TTL reaches 0, the packet is destroyed and an ICMP 'time exceeded' message is returned.
+-   Traceroute works by setting the TTL for a packet to 1 and sending it towards the requested destination host and listens for the reply. 
+-   When the initiating machine receives a 'time exceeded' response, it examines the packet to find where it came from - this is the machine 1 hop away.
+-   The initiating machine then sends a new packet with a TTL of 2 and uses the response to determine the machine 2 hops away, and so on.
