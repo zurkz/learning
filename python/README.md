@@ -1,4 +1,7 @@
 ## PYTHON
+https://www.tutorialspoint.com/python/python_for_loop.htm
+
+https://www.bogotobogo.com/python/python_strings.php
 
 Python code must always be run by an intrepreter.
 
