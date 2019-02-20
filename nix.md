@@ -133,7 +133,7 @@ brw-rw----  1 root disk        8,   3 Dec  8 13:31 sda3
   - 10: RAID 1+0
     - Combines both RAID 1 and RAID 0 by layering them in opposite order
     - Hybrid or Nested 
-    - Fast performance of RAID0 and the redundancy of RAID0
+    - Fast performance of RAID0 and the redundancy of RAID1
 
 ---
 
