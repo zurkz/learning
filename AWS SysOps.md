@@ -310,7 +310,7 @@ AWS Systems Manager Resource Groups
 - Regional Service (create different RGs if operation in different regions)
 - Works with EC2, S3, DynamoDB, etc
 
-### SSM Documents & SSM Run Command
+### SSM Documents & SSM Run Command 
 
 Documents
 - JSON or YAML
@@ -323,5 +323,186 @@ Run Command
 - Execute a document (=script) or just run a command
 - Rate Control/Error Control
 - Integrated with IAM & CloudTrail
-- No need for SSH
+- No need for SSH 
 - Results in the console
+
+
+### SSM Inventory & Patches
+- Invetory --> List software on an instance
+- Inventory + Run Command --> Patch Software
+- Patch Manager --> Gives you compliance
+- Patch Manager + Maintenance Window --> Patch OS
+- State Manager --> Ensure instances are in a consistent state (compliance)
+
+
+### SSM Secure Shell
+Session Manager allows you to start a secure shell on your VM
+- Does not use SSH acces and bastion hosts
+- Uses SSM Agent
+- Only works for EC2 but On-Prem will be soon supported
+- Log actions done through secure shells to S3 and CloudWatch Logs
+- IAM permissions: access SSM + write to S3 + write to CloudWatch
+- CloudTrail can intercept StartSession events
+- AWS Secure Shell VS SSH:
+  - No need to open 22
+  - No need for bastion hosts
+  - All commands are logged to S3 and CloudWatch (auditing)
+  - Acces to Secure Shell is done through User IAM and not SSH Keys
+- Can encrypt log data
+In Systems Manager, go to Session Manager
+
+### What if I lose my SSH Key for EC2
+
+ Different measures depending on if your instance is EBS backed or instance-store backed
+
+ If EBS-backed:
+ - Stop the instance then detach the root volume
+ - Attach root volume to another instance as a data volume
+ - Modify the ~/.ssh/authorized_keys file with your new key
+ - Move the volume back to the stopped instance
+ - Start the instance and you can SSH into it again
+
+
+ New Method for EBS-backed via SSM:
+ - Run the AWSSupport-ResetAccess automation document in SSM
+
+
+ Instance Store Backed EC2
+ - Can't store the instance or you will lose all data.
+ - AWS recommends to terminate the instance and create a new one.
+
+ TIP: Use Session Manager to get a shell and edit the ~/.ssh/authorized_keys file directly
+
+ ### SSM Parameter Store Overview
+
+ - Secure storage for configuration and secrets
+ - Optional Seamless Encryption using KMS
+ - Serverless, scalable, durable, easy SDK, free
+ - Version tracking of configurations/secrets
+ - Configuration management using path & IAM
+ - Notifications with CloudWatch Events
+ - Integration with CloudFormation
+
+ Application contacts SSM Parameter Store. Parameter Store checks IAM Permissions to check if it has the rights to use the Parameter. If so, it gets sent back to the application.
+
+ #####Parameter Store Hierarchy
+
+- /my-department/
+  - my-app/
+    - dev/
+      - db-url
+      - db-password
+    - prod/
+      - db-url
+      - db-password
+  - other-app/
+- /other-department/
+
+or however YoU wAnT. just define some kind of heirarchy.
+
+Say you have dev-lambda function. To get parameters you would use the GetParameters or GetParamtersByPath API
+ 
+CLI:
+
+aws ssm get-parameters --names /my-app/dev/db-url my-app/dev/db-password (--with-decryption)
+
+### AWS Opsworks Overview
+
+- Chef & Puppet help you perform server configuration automatically, or repetitive actions
+- They work great with EC2 & On-Prem VM
+- AWS Opsworks = Managed Chef & Puppet
+- An alternative to AWS SSM
+
+
+IN THE EXAM: Any time you think you would need to use Chef or Puppet, the answer would be AWS Opswork
+
+
+Chef/Puppet:
+- Help with managing config as code
+- Helps in having consistent deployments
+- Works with Linux/Windows
+- Can automate: user accounts, cron, ntp, packages, services...
+- They leverage "Recipes" or "Manifests"
+- Have a lot of similarities with SSM/Beanstalk/CloudFormation but they're open source and work cross-cloud 
+
+---
+
+## EC2 High Availability and Scalability
+
+### Scalability 
+
+Two kinds:
+  - Vertical Scalability
+    - increase the size of the instance
+    - ex: application goes on t2.micro. scaling the application vertically means running it on a t2.large.
+    - very common for non-distributed systems, such as a db
+    - RDS, ElastiCache, etc
+    - usually a hardware limit
+  - Horizontal Scalability (=elasticty)
+    - increase the # of instances/systems for your application
+    - Horizontal scaling imples distributed systems.
+    - Very common for web apps/modern apps
+    - Easy to horizontally scale thanks to the cloud (EC2, GCloud), 1-click scaling
+
+
+High Availability
+- goes hand in hand with horizontal scaling
+- Means running your application/system in at least 2 data centers (AZ's)
+- Goal of HA is to survive a data center loss
+- Can be passive (RDS Multi AZ for example)
+- Can be active (for horizontal scaling)
+
+FOR EC2:
+- Vertical Scaling --> Increasing the instance size (scale up/down)
+- Horizontal Scaling --> Increase the number of instances you have (scale out/in)
+  - Auto scaling groups
+  - Load Balancer
+- High Availablility --> Run instances for the same applicatipon across multi AZ
+  - Auto Scaling Group multi AZ
+  - Load Balancer multi AZ
+
+### Load Balancing Overview
+- Load balancers are servers that forward internet traffic to multiple servers (EC2 Instances) downstream.
+
+Users connect to Load Balancer and Load Balancer redirects that traffic to an EC2 instance. Users are not directed to the same instance. Load is being balanced.
+
+Why use a load balancer?
+- Spread load across multiple downstream instances
+- Expose a single point of access (DNS) to your application
+- Seamlessly handle failures of downstream instances
+- Provide SSL termination (HTTPS) for your websites
+- Enforce stickiness with cookies. Meaning user will talk to the same instance the whole time.
+- HA across zones
+- Separate public traffic from private traffic
+
+#### ELB
+- Managed load balancer
+- AWS guarantees that it will be working
+- AWS takes care of upgrades, maintenance, HA
+- AWS provides only a few configuration knobs
+- It costs less to setup your own load balancer but it will be a lot more effort on your end
+- It is integrated with so many AWS Servers
+
+
+AWS has 3 kinds of load balancers
+
+1. Classic Load Balancer (v1 - old generation) - 2009
+2. Application Load Balancer (v2 - new generation) - 2016
+3. Network Load Balancer (v2 - new generation) - 2017
+
+- Recommended to use the newer/v2 load balancers as they provide more features
+
+
+You can setup an internal (private) or external (public) ELBs
+
+
+##### Health Checks
+
+Crucial for Load Balancers as they enable you to know if your instances are healthy. 
+- They let load balancers know if the instances it forwards traffic to are available to reply to requests.
+
+
+- The health check is done on a port and a route (/health is common)
+- If the response is not 200 (OK), then the instance is unhealthy
+
+
