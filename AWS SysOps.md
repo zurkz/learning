@@ -148,8 +148,180 @@ Dedicated hosts: You book an enitre building or floor of the resort.
   - overall instance has OK CPU performance and when you need to process something enexpected ( a spike in load), it can burst and CPU load can increase. If the instance bursts, the instance uses "burst credits". When you run out of credits, the CPU load decreases significantly. When the instance stops bursting, the credits are accumulated over time.
   - These instances can be amazing to handle unexpected traffic and getting the insurance that it will be handled correctly.
   - If your instance consistently runs low on credit, you need to move to a different kind of non-burstable instance.
-
 - T T2/T3 unlimited: unlimited burst
+  - You pay extra money if you go over your credit balance, but you don't lose performance.
+  - Kinda new (if you consider 2017 new..). so be careful as costs could go high if you're not monitoring the health and status of your instances.
 
 IRL use https://ec2instances.info to spec what type of instance you may need.
 
+
+### EC2 AMIs
+
+base images
+
+AMIs are custom images that can be used on instances. Linux/Windows
+
+Using a custom built AMI can provide the following advantages:
+- Pre-installed packages needed
+- Faster boot time (no need for ec2 user data at boot time)
+- Machine comes configured with monitoring / enterprise software
+- Security concerns -  control over the machines in the network
+- Control of maintenance of updates of AMIs over time (compliance)
+- Active Directory Integration out of the box
+- Installing your app ahead of time (for faster deploys when auto-scaling)
+- Using someone lese's AMI that is optimised for runnning an app, DB, etc...
+- AMIs are built for a specific region. **AMIs ARE NOT GLOBAL**
+- Can pay (rent) someone else's AMI by the hour
+
+Some AMIs may come with malware or not suitable for your enterprise SO DO YOU DUE DILIGENCE
+
+- You AMIs take space and are stored in S3
+- By default, your AMIs are private and locked for your account / region
+- You can make them public to share with other people or sell on the marketplace.
+
+AMI Pricing
+- Since AMIs live in S3, you get charged for the actual space that an AMI takes up in S3. 
+  - S3 Pricing in us-east-1:
+    - First 50TB/month = $0.023/GB
+    - Next 450TB/month = $0.022/GB
+- Overall its quite inexpensive to store private AMIs
+- Make sure to remove the AMIs you don't use
+
+Cross Acount AMI Copy
+- You can share an AMI with another AWS account.
+- Sharing an AMI does not affect the ownership of the AMI.
+- If you copy an AMI that has been shared with your account, you are the onwer of the target AMI in your account.
+- To copy an AMI that has been shared with you from another account, the owner of the source AMI must grant you read permissions for the storage that backs the AMI, either the associated EBS snapshot (for an EBS-backed AMI) or an assoicated S3 bucket (for an instance store-backed AMI)
+
+Limits
+- You can't copy an encrupted AMI that was shared with you from another account. Instead, if the underlying snahpshot and encryption key were shared with you, you can copy the snapshot while re-cnerypting it with a key of your own. You own the coped snapshot and can register it as a new AMI.
+- You can't copy an AMI with an assoicated billingProduct code that was shared with you from another account. This includes Windows AMIs and AMIs from the AWS Marketplace. To copy a shared AMI with a billingProduct code, launch an EC2 instance in your account using the shared AMI and then create an AMI from the instance. 
+
+### Elastic IPs
+
+- When you stop and then start an EC2 instance, it changes its public IP.
+- If you need to have a fixed public IP, you need an Elastic IP
+- An Elastic IP (EIP) is a public IPv4 IP you own as long as you don't delete it. 
+- You can attach it to one instance at a time
+- You can remap it across instances
+- You pay for any EIP that is not attached to a server
+- You don't pay for the EIP if it's attached to a server
+- 5 EIP limit. Can request AWS to increase the limit.
+
+Why use an EIP?
+- You can mask the failure of an instance or software by rapidly remapping the address to another instance in your account.
+
+
+- Overall, try to avoid using an EIP.
+  - Always think if other alternatives are available to you.
+  - You could use a random public IP and and register a DNS name to it using Route53
+  - Use a Load Balancer with a static hostname that maps back to your instances
+
+### CloudWatch Metrics for EC2
+
+- AWS provides metrics for instances (AWS pushes them)
+  - Basic monitoring (default): metrics are collected at a 5 min interval
+  - Detailed Monitoring (paid): metrics are collected at a 1 minute interval
+  - Includes: CPU, Network, Disk and Status Check Metrics
+  - Custom metrics (yours to push) 
+    - Basic Resolution: 1 minute resolution
+    - High Resolution: all the way to 1 second resolution
+    - Includes: RAM, application level metrics
+    - Make sure the EC2 has an associated IAM role to push the metrics to CloudWatch
+
+EC2 Included Metrics
+- CPU: CPU utilization + t2/t3 burst credit usage & balance
+- Network: Network In / Out
+- Status Check:
+  - Instance status = check the EC2 instance
+  - System status = check the underlying hardware
+- Disk: Read/Write for Ops/Bytes (only for instance store)
+- **RAM IS NOT INCLUDED IN AWS EC2 METRICS**
+
+
+### Custom CloudWatch Metrics for EC2
+
+- RAM usage
+- SWAP usage
+  
+  New way - use CloudWatch agent
+
+  but you can use scripts, gotta download, install, and enable - find documentation on AWS to find the scripts for your distro. Also need to ensure scripts have the correct permissions, IAM roles. Create a new EC2 role with CloudWatch Full Access or more granular policy and attach it to the EC2 instance. Add scripts to crontab to run it
+
+### CloudWatch Logs for EC2
+
+CloudWatch agent runs on EC2 instance and pushes all the log files you want straight to CloudWatch.
+- Make sure IAM permissions are correct.
+- Can run agent on on-prem server to collect logs.
+
+check documentation for more detailed instructions.
+
+on instance run, ```sudo yum install -y awslogs```
+- edit the conf file and the cli file to change the region
+
+---
+
+## Manage EC2 Instances at SCALE - SSM & Opswork
+
+### Systems Manager Overview
+
+- Helps you manage you EC2 and On-Prem systems at scale
+- Get operational insights about the state of your infrastructure
+- Easily detect problems
+- Patching automation for enhanced compliance (common question on exam?!?)
+- Free
+- Integrated with CloudWatch metrics/dashboards & AWS Config
+
+Features
+- Resource Groups
+- Insights
+  - Insights Dashboard, Invetnory, Compliance
+- Parameter Store
+
+Actions
+- Automation
+- Run command
+- Session Manager
+- Patch Manager
+- Maintenance Windows
+- State Manager
+
+How does SSM work?
+- AWS Service
+- Instances need to install the SSM Agent
+- Agent is installed by default on AL2 and some Ubuntu AMI's
+- SSM doesn't work out of the box, ensure proper IAM roles are enabled (AmazonEC2RoleforSSM)
+
+### AWS Tags
+- Key Value Pairs that attach to many AWS resources
+- Common tags: Name, Environment, Team, Department, etc
+- Used for: 
+ - Resource Grouping
+ - Automation
+ - Cost Allocation
+- Better to have to many tags than to few
+
+AWS Systems Manager Resource Groups
+- Create view or manage logical group of resources thanks to
+- Create logical groups of resources in SSM such as:
+  - Applications
+  - Different layers of an application stack
+  - Production versus development environments
+- Regional Service (create different RGs if operation in different regions)
+- Works with EC2, S3, DynamoDB, etc
+
+### SSM Documents & SSM Run Command
+
+Documents
+- JSON or YAML
+- Define parameters
+- Define Actions
+- Many docs already exist in AWS
+
+Run Command
+- Run command across multiple instances (using resource groups)
+- Execute a document (=script) or just run a command
+- Rate Control/Error Control
+- Integrated with IAM & CloudTrail
+- No need for SSH
+- Results in the console
