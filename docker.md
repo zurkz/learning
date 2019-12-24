@@ -213,6 +213,20 @@ services:
           - "4081:8081"
   ```
 
+
+#### -v or --mount
+
+--mount is simpler(?) than --volume 
+
+mount consists of key value pairs 
+volume fields are separated by colon characters - there are 3 fields and they must be in the correct order.
+   - if the volume has a name, the name field is the first field. if the volume has no name, the name field is omitted
+   - the second field is the path where the file or dir are mounted in the container. 
+   - the third field is optional and is a comma,separated list of options, ie ro or rw
+
+
+
+
 ---
 
 Github repo
@@ -229,3 +243,6 @@ push any changes you make back to feature branch. never push code directly to ma
 
 A **pull request** will be made to merge any changes you made to the feature branch over to the master branch.
 - pull request will automatically take master branch and 
+
+
+

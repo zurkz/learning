@@ -284,3 +284,15 @@ traceroute - expands on ping
 -   Traceroute works by setting the TTL for a packet to 1 and sending it towards the requested destination host and listens for the reply. 
 -   When the initiating machine receives a 'time exceeded' response, it examines the packet to find where it came from - this is the machine 1 hop away.
 -   The initiating machine then sends a new packet with a TTL of 2 and uses the response to determine the machine 2 hops away, and so on.
+
+
+
+
+
+
+---
+tips
+
+CentOS 7 reset root pw
+- restart machine, when grub comes up asking to select kernel, hit e on keyboard.
+- scroll down in the grub config and find the line that starts with "linux16 /vmlinuz-xxxx" and 
