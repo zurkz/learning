@@ -1,0 +1,12 @@
+app:  
+image: nextcloud:fpm
+restart: always
+volumes:
+    - nextcloud:/var/www/html
+    - /mnt/nas/nextcloud/data:/var/www/html/data
+environment:
+    - POSTGRES_HOST=db
+env_file:
+    - db.env
+depends_on:
+    - db

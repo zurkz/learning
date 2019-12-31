@@ -214,6 +214,15 @@ services:
   ```
 
 
+
+
+docker run -d \
+-v data:/var/www/html/data \
+nextcloud
+
+
+
+
 #### -v or --mount
 
 --mount is simpler(?) than --volume 
