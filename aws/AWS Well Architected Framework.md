@@ -21,17 +21,27 @@ Six design principles for operational excellence in the cloud:
 2. Annotate documentation
    - In the cloud you can automate the creation of annotated documentation after every build (or automatically annotate hand-crafted documentation). Annotated documentation can be used by people and systems. 
 3. Make frequent, small reversible changes
-    - Design workloads to allow components to be updated regularly. Make changes in small increments that can be reversed if they fail (without affecting customers when possible)
+    - Design workloads to allow components to be updated regularly. Make changes in small increments that can be reversed if they fail (without affecting customers when possible).
 4. Refine operations procedures frequently
-    - As you use operations procedurs and evolve your workload, look for opportunities to to improve and evolve your procedurs appropriately
+    - As you use operations procedurs and evolve your workload, look for opportunities to to improve and evolve your procedurs appropriately.
+5. Anticipate Failure
+    - Perform "pre-mortem" exercises to identify potential sources of failure so that they can be removed or mitiagted. Test your failure scenarios and validate your understanding of their impact. Test your response procedures to ensure that they are effective, and that teams are familiar with their execution. Set up regular game days to test workloads and team responses to simulated events.
+6. Learn from all operational failures
+    - Drive improvement through lessons learned from all operation events and failures. Share what is learned across teams and through the entire organization.
 
-**Security** - Ability to protect information, systems, and assets while delivering business value through risk assessments and mitigation strategies
+There are 3 best practive areas for operation excellence in the cloud:
+1. Prepare
+   - Effective preparation is required to drive operation excellence. Shared goals and a general understanding of the business needs 
+2. Operate
+3. Evolve
 
-**Reliability** - Ability of a system to recover form infrastructure of service disruptuons, dynamically acquire computing resources to meet demand, and mitiage disruption such as misconfigurations or transient network issues
+**Security** - Ability to protect information, systems, and assets while delivering business value through risk assessments and mitigation strategies.
 
-**Performance Efficiency** - Ability to use computing resources efficiently to meet system requirements, and to maintain that efficiency as demand changes and technologies evole
+**Reliability** - Ability of a system to recover form infrastructure of service disruptuons, dynamically acquire computing resources to meet demand, and mitiage disruption such as misconfigurations or transient network issues.
 
-**Cost Optimization** - Ability to run systems to deliver business value at the lowest price point
+**Performance Efficiency** - Ability to use computing resources efficiently to meet system requirements, and to maintain that efficiency as demand changes and technologies evole.
+
+**Cost Optimization** - Ability to run systems to deliver business value at the lowest price point.
 
 ----
 
