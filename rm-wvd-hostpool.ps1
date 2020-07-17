@@ -1,3 +1,4 @@
+﻿
 <#
 .SYNOPSIS
     Delete a WVD host pool and its resources.
@@ -7,13 +8,15 @@
         -  Handle multiple subscriptions
         -  Create nested functions
 .NOTES
-    Script is offered as-is with no warranty, expressed or implied.
     Test it before you trust it
-    Author      : Daniel ZUrkan
+    Author      : Daniel Zurkan
     Version     : .04
 #>
-function rm_wvd_hostpool{
-    param([parameter(Mandatory=$true)][str]$hp, [parameter(Mandatory=$true)][str]$rg)
+
+function rm_wvd_hostpool {
+
+    param([parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$hp, [parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$rg)
+
 
     # Log in to Azure
     Connect-AzAccount
