@@ -15,13 +15,12 @@
 
         TODO:
             - Handle multiple subscriptions.
-            - Cache azure credentials instead of having to authenticate each time the script is ran.
             - Look into nested functions.
             - Test with session hosts and applications.
-            - Handle errors better
-            - Improve code
+            - Handle errors better.
+            - Improve code.
         
-        Version: .4.02
+        Version: .4.03
     #>
 
 function rm_wvd_hostpool {
@@ -37,8 +36,11 @@ function rm_wvd_hostpool {
         [Alias("rg")][string]$resourcegroup)
 
     # Log in to Azure
-    Connect-AzAccount
-
+    if ($null -eq (Get-AzContext -ErrorAction SilentlyContinue)) {
+        Write-Output "Log in to Azure with an account that has permissions to delete a host pool" -ForegroundColor Red
+        Connect-AzAccount
+    }
+    
     #subscription
     # handle multiple subscriptions
 
@@ -51,7 +53,7 @@ function rm_wvd_hostpool {
     # If $rg does not exist in $listRg, exit with error
     else {
         $ErrorMessage = $_.Exception.message
-        write-error ('Resource group does not exist. ' + $ErrorMessage)
+        Write-Error ('Resource group does not exist. ' + $ErrorMessage)
         Exit 
     }
 
@@ -80,7 +82,7 @@ function rm_wvd_hostpool {
         $appGrps = Get-AzWvdApplicationGroup -ResourceGroupName $resourcegroup |
             # Loop over each object in $appGrps
             ForEach-Object {
-            # If the AppGroup's HostPoolArmPath property has the name of the host pool in it, delete that AppGroups
+            # If the AppGroup's HostPoolArmPath value has the name of the host pool in it, delete that AppGroup
             if ($_.HostPoolArmPath -match $hostpool){
                 # Delete each AppGroup in $hp
                 foreach ($i in $_.Name){
