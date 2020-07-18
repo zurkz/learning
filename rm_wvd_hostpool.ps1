@@ -27,7 +27,7 @@ function rm_wvd_hostpool {
 
     # Inputs for the function. Both parameters are required and cannot be null
     param(
-        [parameter(Mandatory=$true,HelpMessage="Enter a host name")]
+        [parameter(Mandatory=$true,HelpMessage="Enter a host pool name")]
         [ValidateNotNullOrEmpty()]
         [Alias("hp")][string]$hostpool, 
 
@@ -125,5 +125,9 @@ function rm_wvd_hostpool {
             Write-Error ("Error removing host pool $hostpool " + $ErrorMessage)
             Break
         }
+    }
+    else {
+        Write-Host 'Host pool deletion cancelled'
+        exit
     }
 }
