@@ -10,6 +10,12 @@
         rm_wvd_hostpool -rg <resourcegroup> -hp <hostpool>
 
     .NOTES
+        Name       : rm_wvd_hostpool.ps1
+        Author     : Daniel Zurkan
+        Version    : .4.04
+        DateCreated: 2020-07-16
+        DateUpdated: 2020-07-19
+
         Only tested on an account with one subscription, zero session hosts, and zero applications.
         YMMV
 
@@ -19,8 +25,8 @@
             - Test with session hosts and applications.
             - Handle errors better.
             - Improve code.
-        
-        Version: .4.03
+    .LINK
+        https://github.com/zurkz/learning/blob/master/azure/rm_wvd_hostpool.ps1
     #>
 
 function rm_wvd_hostpool {
@@ -119,7 +125,7 @@ function rm_wvd_hostpool {
         Write-Host "Removing host pool $hostpool"
         try {
             Remove-AzWvdHostPool -ResourceGroupName $resourcegroup -Name $hostpool
-            Write-Host "`n Host pool $hostpool has been deleted from $resourcegroup" -ForegroundColor Green
+            Write-Host "`n Host pool $hostpool has been deleted from resource group $resourcegroup" -ForegroundColor Green
         }
         catch {
             $ErrorMessage = $_.Exception.message
