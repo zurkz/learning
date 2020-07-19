@@ -4,13 +4,13 @@
 
     .DESCRIPTION
         This script will take the user supplied host pool and delete any associated Remote Application groups,
-        Desktop Application group, session hosts, and then the host pool.
+        Desktop Application group, session hosts, and the host pool.
 
     .EXAMPLE
         rm_wvd_hostpool -rg <resourcegroup> -hp <hostpool>
 
     .NOTES
-        Only tested on a account with one subscription, zero session hosts, and zero applications.
+        Only tested on an account with one subscription, zero session hosts, and zero applications.
         YMMV
 
         TODO:
@@ -27,7 +27,7 @@ function rm_wvd_hostpool {
 
     # Inputs for the function. Both parameters are required and cannot be null
     param(
-        [parameter(Mandatory=$true,HelpMessage="Enter a host pool name")]
+        [parameter(Mandatory=$true,HelpMessage="Enter a host pool")]
         [ValidateNotNullOrEmpty()]
         [Alias("hp")][string]$hostpool, 
 
