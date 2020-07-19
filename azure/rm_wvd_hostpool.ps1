@@ -119,6 +119,7 @@ function rm_wvd_hostpool {
         Write-Host "Removing host pool $hostpool"
         try {
             Remove-AzWvdHostPool -ResourceGroupName $resourcegroup -Name $hostpool
+            Write-Host "`n Host pool $hostpool has been deleted from $resourcegroup" -ForegroundColor Green
         }
         catch {
             $ErrorMessage = $_.Exception.message
