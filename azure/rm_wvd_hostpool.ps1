@@ -110,7 +110,7 @@ function rm_wvd_hostpool {
         $sessionHosts = Get-AzWvdSessionHost -ResourceGroupName $resourcegroup -HostPoolName $hostpool |
             ForEach-Object {
                 foreach ($i in $_.Name){
-                    write-host "Removing session host $i from $hostpool"
+                    Write-Host "Removing session host $i from $hostpool"
                     try {
                         Remove-AzWvdSessionHost -ResourceGroupName $resourcegroup -HostPoolName $hostpool -Name $i
                     }
