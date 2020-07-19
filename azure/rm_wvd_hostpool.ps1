@@ -116,7 +116,7 @@ function rm_wvd_hostpool {
             }  
 
         # Delete the host pool
-        Write-Host "Removing Host Pool $hostpool"
+        Write-Host "Removing host pool $hostpool"
         try {
             Remove-AzWvdHostPool -ResourceGroupName $resourcegroup -Name $hostpool
         }
